@@ -27,9 +27,5 @@ Tic-Tac-Toe/
 
 ## 📌 To-Do (Contributions Welcome!)
  - Add player name input
- 
- - Add a replay option
-
- - Add single-player mode (AI)
-
+   
  - Add GUI with Tkinter or Pygame
