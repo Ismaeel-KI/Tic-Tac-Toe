@@ -19,37 +19,39 @@ def canva(value):
     ''')
 
 
-def player_turn(user, sym, turn, count):
-    user_choice = input(f'{user}: Enter the place: ').upper()
-    if user_choice in value.keys():
-        if value[user_choice] not in ['X', 'O']:
-            value[user_choice] = sym
-            canva(value)
-            count += 1
-            return not turn, count
-        else:
-            print('Already Occupied. Try Again!')
-    else:
-        print('Wrong Value, Try Again!')
+def play(user, sym, turn, count):
 
-    return turn, count
+    while True:
+        user_choice = input(f'{user}: Enter the place: ').upper()
+        if user_choice in values:
+            if values[user_choice] not in ['X', 'O']:
+                values[user_choice] = sym
+                canva(values)
+                count += 1
+                return not turn, count
+            else:
+                print('Already Occupied. Try Again!')
+        else:
+            print('Wrong Value, Try Again!')
 
 
 def winning_condition(value, game_on):
-    winning_combo = winning_combinations = [
-        ['A1', 'A2', 'A3'], ['B1', 'B2', 'B3'], ['C1', 'C2', 'C3'],  # rows
-        ['A1', 'B1', 'C1'], ['A2', 'B2', 'C2'], ['A3', 'B3', 'C3'],  # columns
-        ['A1', 'B2', 'C3'], ['A3', 'B2', 'C1']  # diagonals
+    winning_combo = [
+        ['A1', 'A2', 'A3'], ['B1', 'B2', 'B3'], ['C1', 'C2', 'C3'],
+        ['A1', 'B1', 'C1'], ['A2', 'B2', 'C2'], ['A3', 'B3', 'C3'],
+        ['A1', 'B2', 'C3'], ['A3', 'B2', 'C1']
     ]
-    if all(value[cell] == 'X' for cell in winning_combo):
-        print('Winner is User1!!')
-        return not game_on
-    elif all(value[cell] == 'O' for cell in winning_combo):
-        print('Winner is User2!!')
-        return not game_on
+    for combo in winning_combo:
+        if all(value[cell] == 'X' for cell in combo):
+            print('Winner is User1!!')
+            return False
+        elif all(value[cell] == 'O' for cell in combo):
+            print('Winner is User2!!')
+            return False
+    return game_on
 
 
-value = {
+values = {
     "A1": ' ',
     "A2": ' ',
     "A3": ' ',
@@ -60,20 +62,20 @@ value = {
     "C2": ' ',
     "C3": ' ',
 }
-canva(value)
+canva(values)
 game_on = True
 player1_turn = True
-count = 0
+counts = 0
 
 while game_on:
     if player1_turn:
-        player1_turn, count = player_turn(user='User1', sym='X', turn=player1_turn, count=count)
+        player1_turn, counts = play(user='User1', sym='X', turn=player1_turn, count=counts)
     else:
-        player1_turn, count = player_turn(user='User2', sym='O', turn=player1_turn, count=count)
+        player1_turn, counts = play(user='User2', sym='O', turn=player1_turn, count=counts)
 
-    if count >= 6:
-        game_on = winning_condition(value, game_on)
-    if count == 9 and game_on:
+    if counts >= 5:
+        game_on = winning_condition(values, game_on)
+    if counts == 9 and game_on:
         print("It's a Draw!")
         break
 
